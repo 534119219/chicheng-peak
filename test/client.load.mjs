@@ -1,5 +1,5 @@
 /**
- * chicheng-peak-valley — client factory top-level load test.
+ * chicheng-peak — client factory top-level load test.
  * Runs the client bundle factory with stubbed window/ModuleLoader/require to
  * catch top-level reference errors (dicts, styles, component definitions).
  */
@@ -49,7 +49,7 @@ evalFactory(window, window.require, moduleStub, exportsStub);
 
 const loaded = window.__loaded;
 assert("factory registered via ModuleLoader", !!loaded);
-assert("module id", loaded && loaded.id === "chicheng-peak-valley");
+assert("module id", loaded && loaded.id === "chicheng-peak");
 assert("name constant", loaded && loaded.factory);
 assert("locale dicts present", source.includes('nav: "峰谷提醒"') && source.includes('nav: "Peak / Valley"'));
 assert("settings.section slot registered", source.includes('"settings.section"'));

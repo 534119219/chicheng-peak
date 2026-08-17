@@ -1,9 +1,9 @@
-# chicheng-peak-valley bundle patch
+# chicheng-peak bundle patch
 #
 # Mounts the peak/valley reminder plugin into the profile loader. `name` must
 # resolve from the profile node_modules (installed via `dsh plugin --profile
 # <name> add <this package>`), and the client half is served by the host at
-# /plugins/chicheng-peak-valley/client.js.
+# /plugins/chicheng-peak/client.js.
 - insert:
-    - id: chicheng-peak-valley
-      name: 'chicheng-peak-valley'
+    - id: chicheng-peak
+      name: 'chicheng-peak'

@@ -1,5 +1,5 @@
 /**
- * chicheng-peak-valley — host half smoke test.
+ * chicheng-peak — host half smoke test.
  * Mounts apply() with stub services, then exercises the /peakvalley/api routes
  * through a fake HTTP request/response pair.
  */

@@ -1,5 +1,5 @@
 /**
- * chicheng-peak-valley — schedule engine smoke test
+ * chicheng-peak — schedule engine smoke test
  * Runs the pure primitives from lib/index.js against the official 2026-08-17
  * schedule (peak 09:00-12:00 / 14:00-18:00, Asia/Shanghai).
  */

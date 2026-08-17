@@ -1,5 +1,5 @@
 /**
- * chicheng-peak-valley — client runtime execution test.
+ * chicheng-peak — client runtime execution test.
  * Loads the client factory, runs apply() against stub services with a minimal
  * DOM stub, then drives one status poll so applyOverlay() actually executes —
  * this catches runtime ReferenceErrors (e.g. a dangling element reference)
