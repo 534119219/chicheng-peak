@@ -63,6 +63,8 @@ globalThis.document = documentStub;
 
 const windowStub = {
   __ModuleLoader__: { load(spec) { windowStub.__loaded = spec; } },
+  addEventListener() {},
+  removeEventListener() {},
 };
 globalThis.window = windowStub;
 
