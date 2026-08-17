@@ -1,0 +1,23 @@
+# Changelog
+
+All notable changes to this project are documented in this file.
+
+## [0.1.0] — 2026-08-17
+
+### Added
+
+- DeepSeek 官方峰谷时段感知：高峰 09:00–12:00 / 14:00–18:00（北京时间），其余为低峰。
+- 网页边缘贴屏呼吸边框：高峰橙色 / 低峰蓝色，呼吸光晕在边框内圈起伏。
+- 边框外观设置：颜色（色板 + 取色器）、宽度、光晕强度、不透明度（默认 40%）、
+  呼吸动画（呼吸/常亮/关闭）、呼吸频率、流光彗星（开关 + 速度）、状态角标（默认开启）。
+- 服务端提醒调度：高峰/低峰转折前提前 0/5/10/15/30/60 分钟，或每日固定时间；
+  标题/内容模板（`{phase}` `{start}` `{end}` `{time}` 等变量）；渠道支持
+  chicheng-push 全部渠道与 messaging-core 消息平台目标；页面关闭也能送达。
+- 浏览器本地通知：阶段转折 / 托管提醒触发时通知（可分别开关）。
+- 手机端角标跟随输入框右上角（含输入法弹出/收起时的重定位）。
+- fenced API `/peakvalley/api/*`（status / config / save / reset / pushChannels / test / fireNow）。
+- 测试：引擎 31 项、host 冒烟 8 项、client 加载 6 项、client 运行时 12 项。
+
+### Fixed
+
+- 修复 overlay 中悬空 `flow` 元素引用导致的边框静默不渲染（新增运行时回归测试）。
