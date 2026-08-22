@@ -113,9 +113,13 @@ const statusPayload = {
     pollSeconds: 15,
     edge: {
       enabled: true, peakColor: "#f97316", valleyColor: "#38bdf8", width: 3,
-      animation: "breathing", breathingSpeed: 2.6, glow: 22, opacity: 0.95,
-      glowDirection: "out", flow: true, flowSpeed: 6, badge: true,
-      composer: { enabled: true, glowDirection: "out" },
+      animation: "breathing", breathingSpeed: 2.6, glow: 22, opacity: 0.4,
+      glowDirection: "out", flow: false, flowSpeed: 6, badge: true,
+    },
+    composer: {
+      enabled: true, peakColor: "#f97316", valleyColor: "#38bdf8", width: 2,
+      animation: "breathing", breathingSpeed: 2.6, glow: 14, opacity: 0.5,
+      glowDirection: "out", flow: true, flowSpeed: 6,
     },
     localNotify: { enabled: false, onTransition: true, onReminder: false },
     reminders: {
@@ -216,7 +220,9 @@ assert("ring exists", !!ring);
 assert("ring got border", ring && typeof ring.style.border === "string" && ring.style.border.includes("#f97316"), ring && ring.style.border);
 assert("breathing animation applied (outward)", ring && typeof ring.style.animation === "string" && ring.style.animation.includes("dsh-pv-breathe-out"), ring && ring.style.animation);
 const comet = byId.get("dsh-pv-comet-1");
-assert("comet visible when flow on", comet && comet.style.visibility === "visible", comet && comet.style.visibility);
+assert("edge comet hidden when edge flow off", comet && comet.style.visibility === "hidden", comet && comet.style.visibility);
+const ccomet = byId.get("dsh-pv-composer-comet-1");
+assert("composer comet visible when composer flow on", ccomet && ccomet.style.visibility === "visible", ccomet && ccomet.style.visibility);
 
 const cring = byId.get("dsh-pv-composer-ring");
 assert("composer ring exists", !!cring);
