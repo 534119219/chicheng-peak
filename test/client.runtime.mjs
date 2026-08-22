@@ -60,7 +60,8 @@ const documentStub = {
   head: { appendChild(el) { if (el.id) byId.set(el.id, el); } },
   querySelectorAll(selector) {
     // fake composer: textarea inside a taller rounded composite box (the
-    // control that holds the input plus its toolbar/send row)
+    // control that holds the input plus its toolbar/send row), itself inside
+    // a big "sidebar"-named ancestor that naive keyword matching would grab
     const textarea = {
       tagName: "TEXTAREA",
       getBoundingClientRect: () => ({ left: 10, top: 500, right: 610, bottom: 548, width: 600, height: 48 }),
@@ -73,7 +74,16 @@ const documentStub = {
       getBoundingClientRect: () => ({ left: 8, top: 470, right: 628, bottom: 562, width: 620, height: 92 }),
       parentElement: null,
     };
+    const bigSidebar = {
+      tagName: "DIV",
+      className: "app-sidebar-view",
+      id: "main",
+      getAttribute() { return null; },
+      getBoundingClientRect: () => ({ left: 0, top: 0, right: 800, bottom: 700, width: 800, height: 700 }),
+      parentElement: null,
+    };
     textarea.parentElement = composerBox;
+    composerBox.parentElement = bigSidebar;
     return [textarea];
   },
 };
