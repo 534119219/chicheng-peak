@@ -114,8 +114,8 @@ const statusPayload = {
     edge: {
       enabled: true, peakColor: "#f97316", valleyColor: "#38bdf8", width: 3,
       animation: "breathing", breathingSpeed: 2.6, glow: 22, opacity: 0.95,
-      glowDirection: "in", flow: true, flowSpeed: 6, badge: true,
-      composer: { enabled: true, glowDirection: "in" },
+      glowDirection: "out", flow: true, flowSpeed: 6, badge: true,
+      composer: { enabled: true, glowDirection: "out" },
     },
     localNotify: { enabled: false, onTransition: true, onReminder: false },
     reminders: {
@@ -214,14 +214,14 @@ assert("status fetched ≥ 1 time", fetchCalls >= 1, "fetchCalls=" + fetchCalls)
 const ring = byId.get("dsh-pv-ring");
 assert("ring exists", !!ring);
 assert("ring got border", ring && typeof ring.style.border === "string" && ring.style.border.includes("#f97316"), ring && ring.style.border);
-assert("breathing animation applied (inward)", ring && typeof ring.style.animation === "string" && ring.style.animation.includes("dsh-pv-breathe-in"), ring && ring.style.animation);
+assert("breathing animation applied (outward)", ring && typeof ring.style.animation === "string" && ring.style.animation.includes("dsh-pv-breathe-out"), ring && ring.style.animation);
 const comet = byId.get("dsh-pv-comet-1");
 assert("comet visible when flow on", comet && comet.style.visibility === "visible", comet && comet.style.visibility);
 
 const cring = byId.get("dsh-pv-composer-ring");
 assert("composer ring exists", !!cring);
 assert("composer border uses phase color", cring && typeof cring.style.border === "string" && cring.style.border.includes("#f97316"), cring && cring.style.border);
-assert("composer breathing inward", cring && typeof cring.style.animation === "string" && cring.style.animation.includes("dsh-pv-breathe-in"), cring && cring.style.animation);
+assert("composer breathing outward", cring && typeof cring.style.animation === "string" && cring.style.animation.includes("dsh-pv-breathe-out"), cring && cring.style.animation);
 assert("composer ring hugs the CONTAINER (left 8px)", cring && cring.style.left === "8px", cring && cring.style.left);
 assert("composer ring hugs the CONTAINER (top 470px)", cring && cring.style.top === "470px", cring && cring.style.top);
 assert("composer ring hugs the CONTAINER (620x92)", cring && cring.style.width === "620px" && cring.style.height === "92px", cring && cring.style.width + "x" + cring.style.height);
