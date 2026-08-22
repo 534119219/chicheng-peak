@@ -59,11 +59,22 @@ const documentStub = {
   },
   head: { appendChild(el) { if (el.id) byId.set(el.id, el); } },
   querySelectorAll(selector) {
-    // one fake composer textarea, fully visible in the 800px viewport
-    return [{
+    // fake composer: textarea inside a taller rounded composite box (the
+    // control that holds the input plus its toolbar/send row)
+    const textarea = {
       tagName: "TEXTAREA",
       getBoundingClientRect: () => ({ left: 10, top: 500, right: 610, bottom: 548, width: 600, height: 48 }),
-    }];
+    };
+    const composerBox = {
+      tagName: "DIV",
+      className: "composer-box",
+      id: "composer",
+      getAttribute() { return null; },
+      getBoundingClientRect: () => ({ left: 8, top: 470, right: 628, bottom: 562, width: 620, height: 92 }),
+      parentElement: null,
+    };
+    textarea.parentElement = composerBox;
+    return [textarea];
   },
 };
 globalThis.document = documentStub;
@@ -201,6 +212,10 @@ const cring = byId.get("dsh-pv-composer-ring");
 assert("composer ring exists", !!cring);
 assert("composer border uses phase color", cring && typeof cring.style.border === "string" && cring.style.border.includes("#f97316"), cring && cring.style.border);
 assert("composer breathing inward", cring && typeof cring.style.animation === "string" && cring.style.animation.includes("dsh-pv-breathe-in"), cring && cring.style.animation);
+assert("composer ring hugs the CONTAINER (left 8px)", cring && cring.style.left === "8px", cring && cring.style.left);
+assert("composer ring hugs the CONTAINER (top 470px)", cring && cring.style.top === "470px", cring && cring.style.top);
+assert("composer ring hugs the CONTAINER (620x92)", cring && cring.style.width === "620px" && cring.style.height === "92px", cring && cring.style.width + "x" + cring.style.height);
+assert("composer ring radius from container", cring && cring.style.borderRadius === "12px", cring && cring.style.borderRadius);
 
 // ------------------------------------------------------------- cleanup
 for (const fn of ctx._disposers) { try { fn(); } catch { /* ignore */ } }
