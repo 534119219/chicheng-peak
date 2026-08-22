@@ -59,6 +59,7 @@ const documentStub = {
   },
   head: { appendChild(el) { if (el.id) byId.set(el.id, el); } },
   querySelectorAll(selector) {
+    if (!composerPresent) return [];
     // fake composer: textarea inside a taller rounded composite box (the
     // control that holds the input plus its toolbar/send row), itself inside
     // a big "sidebar"-named ancestor that naive keyword matching would grab
@@ -87,6 +88,7 @@ const documentStub = {
     return [textarea];
   },
 };
+let composerPresent = true;
 globalThis.document = documentStub;
 
 const windowStub = {
@@ -232,6 +234,13 @@ assert("composer ring hugs the CONTAINER (left 8px)", cring && cring.style.left 
 assert("composer ring hugs the CONTAINER (top 470px)", cring && cring.style.top === "470px", cring && cring.style.top);
 assert("composer ring hugs the CONTAINER (620x92)", cring && cring.style.width === "620px" && cring.style.height === "92px", cring && cring.style.width + "x" + cring.style.height);
 assert("composer ring radius from container", cring && cring.style.borderRadius === "12px", cring && cring.style.borderRadius);
+
+// ---- transient popup: composer hidden (querySelectorAll → []) — the ring
+// must keep its last geometry instead of flickering away
+composerPresent = false;
+await new Promise((resolve) => setTimeout(resolve, 50));
+assert("ring stays visible while composer is hidden (kept last rect)", cring && cring.style.visibility === "visible", cring && cring.style.visibility);
+assert("ring keeps last rect while composer is hidden", cring && cring.style.left === "8px" && cring.style.top === "470px", cring && cring.style.left + "," + cring.style.top);
 
 // ------------------------------------------------------------- cleanup
 for (const fn of ctx._disposers) { try { fn(); } catch { /* ignore */ } }
