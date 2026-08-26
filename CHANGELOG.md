@@ -6,6 +6,7 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- 状态角标**独立化**：不再随页面边框开关联动；新增顶层 `badge` 配置（启用 + PC/手机端各自四角位置与水平/垂直偏移），设置页新增独立圆角分区「状态角标」；存储迁移自旧 `edge.badge`。
 - 输入框光效**完全独立**：新增顶层 `composer` 配置（高峰色/低峰色、宽度、光晕、不透明度、呼吸动画与频率、光效方向、流光开关与速度），与页面边缘互不影响；存储迁移自旧 `edge.composer`。
 - 设置页新增独立圆角分区「输入框光效」，含即时预览与恢复默认。
 

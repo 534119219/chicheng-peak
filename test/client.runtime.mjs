@@ -116,7 +116,12 @@ const statusPayload = {
     edge: {
       enabled: true, peakColor: "#f97316", valleyColor: "#38bdf8", width: 3,
       animation: "breathing", breathingSpeed: 2.6, glow: 22, opacity: 0.4,
-      glowDirection: "out", flow: false, flowSpeed: 6, badge: true,
+      glowDirection: "out", flow: false, flowSpeed: 6,
+    },
+    badge: {
+      enabled: true,
+      desktop: { corner: "br", x: 18, y: 18 },
+      mobile: { corner: "br", x: 12, y: 96 },
     },
     composer: {
       enabled: true, peakColor: "#f97316", valleyColor: "#38bdf8", width: 2,

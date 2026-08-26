@@ -89,10 +89,12 @@ assert("isPeakAt 400 not in window", I.isPeakAt(400, I.OFFICIAL_WINDOWS) === fal
     timezone: "Asia/Shanghai",
     windows: [{ start: "09:00", end: "12:00" }],
     pollSeconds: 3,
-    edge: { width: 99, opacity: 5, peakColor: "#ff0000", valleyColor: "#00ff00", glow: -5, flow: true, badge: true },
+    edge: { width: 99, opacity: 5, peakColor: "#ff0000", valleyColor: "#00ff00", glow: -5, flow: true },
+    badge: { enabled: true, desktop: { corner: "tl", x: 500, y: -3 }, mobile: { corner: "xx", x: 12, y: 96 } },
     reminders: { peak: { enabled: true, leadMinutes: 30, channel: "messaging:tg:123", title: "T", content: "C" } },
   });
-  assert("sanitize clamps edge values", good.ok === true && good.config.edge.width === 14 && good.config.edge.opacity === 1 && good.config.edge.glow === 0 && good.config.edge.flow === true && good.config.edge.badge === true);
+  assert("sanitize clamps edge values", good.ok === true && good.config.edge.width === 14 && good.config.edge.opacity === 1 && good.config.edge.glow === 0 && good.config.edge.flow === true);
+  assert("sanitize badge block", good.config.badge.enabled === true && good.config.badge.desktop.corner === "tl" && good.config.badge.desktop.x === 400 && good.config.badge.desktop.y === 0 && good.config.badge.mobile.corner === "br");
   assert("sanitize clamps pollSeconds", good.config.pollSeconds === 5);
   assert("sanitize keeps reminder", good.config.reminders.peak.leadMinutes === 30 && good.config.reminders.peak.channel === "messaging:tg:123");
 }
