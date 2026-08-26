@@ -132,9 +132,10 @@ const statusPayload = {
 };
 
 let fetchCalls = 0;
+let currentPayload = statusPayload;
 globalThis.fetch = function () {
   fetchCalls += 1;
-  return Promise.resolve({ json: () => Promise.resolve(statusPayload) });
+  return Promise.resolve({ json: () => Promise.resolve(currentPayload) });
 };
 
 // ------------------------------------------------------------- module under test
@@ -238,9 +239,20 @@ assert("composer ring radius from container", cring && cring.style.borderRadius 
 // ---- transient popup: composer hidden (querySelectorAll → []) — the ring
 // must keep its last geometry instead of flickering away
 composerPresent = false;
+exportsObj._runtime.refreshNow();
 await new Promise((resolve) => setTimeout(resolve, 50));
 assert("ring stays visible while composer is hidden (kept last rect)", cring && cring.style.visibility === "visible", cring && cring.style.visibility);
 assert("ring keeps last rect while composer is hidden", cring && cring.style.left === "8px" && cring.style.top === "470px", cring && cring.style.left + "," + cring.style.top);
+
+// ---- page edge OFF, composer ON: composer glow must stay independent
+composerPresent = true;
+currentPayload = JSON.parse(JSON.stringify(statusPayload));
+currentPayload.value.edge.enabled = false;
+exportsObj._runtime.refreshNow();
+await new Promise((resolve) => setTimeout(resolve, 50));
+const rootEl2 = byId.get("dsh-pv-overlay");
+assert("page ring hidden when edge disabled", rootEl2 && rootEl2.style.visibility === "hidden", rootEl2 && rootEl2.style.visibility);
+assert("composer ring still visible when edge disabled", cring && cring.style.visibility === "visible", cring && cring.style.visibility);
 
 // ------------------------------------------------------------- cleanup
 for (const fn of ctx._disposers) { try { fn(); } catch { /* ignore */ } }
