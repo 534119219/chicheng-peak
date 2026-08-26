@@ -25,8 +25,9 @@ function makeElement(tag) {
       cssText: "",
       setProperty(k, v) { this[k] = v; },
     },
-    setAttribute() {},
-    getAttribute() { return null; },
+    setAttribute(k, v) { this.__attrs = this.__attrs || {}; this.__attrs[k] = v; },
+    removeAttribute(k) { if (this.__attrs) delete this.__attrs[k]; },
+    getAttribute(k) { return (this.__attrs && this.__attrs[k]) || null; },
     appendChild(child) {
       this.__children.push(child);
       if (child.id) byId.set(child.id, child);
@@ -56,6 +57,10 @@ const documentStub = {
       attached.push(el);
       if (el.id) byId.set(el.id, el);
     },
+    style: {
+      setProperty(k, v) { this[k] = v; },
+      removeProperty(k) { delete this[k]; },
+    },
   },
   head: { appendChild(el) { if (el.id) byId.set(el.id, el); } },
   querySelectorAll(selector) {
@@ -72,6 +77,8 @@ const documentStub = {
       className: "composer-box",
       id: "composer",
       getAttribute() { return null; },
+      setAttribute(k, v) { this.__attrs = this.__attrs || {}; this.__attrs[k] = v; },
+      removeAttribute(k) { if (this.__attrs) delete this.__attrs[k]; },
       getBoundingClientRect: () => ({ left: 8, top: 470, right: 628, bottom: 562, width: 620, height: 92 }),
       parentElement: null,
     };
@@ -85,10 +92,12 @@ const documentStub = {
     };
     textarea.parentElement = composerBox;
     composerBox.parentElement = bigSidebar;
+    composerBoxRef = composerBox;
     return [textarea];
   },
 };
 let composerPresent = true;
+let composerBoxRef = null;
 globalThis.document = documentStub;
 
 const windowStub = {
@@ -234,12 +243,12 @@ assert("composer comet visible when composer flow on", ccomet && ccomet.style.vi
 
 const cring = byId.get("dsh-pv-composer-ring");
 assert("composer ring exists", !!cring);
-assert("composer border uses phase color", cring && typeof cring.style.border === "string" && cring.style.border.includes("#f97316"), cring && cring.style.border);
-assert("composer breathing outward", cring && typeof cring.style.animation === "string" && cring.style.animation.includes("dsh-pv-breathe-out"), cring && cring.style.animation);
-assert("composer ring hugs the CONTAINER (left 8px)", cring && cring.style.left === "8px", cring && cring.style.left);
-assert("composer ring hugs the CONTAINER (top 470px)", cring && cring.style.top === "470px", cring && cring.style.top);
-assert("composer ring hugs the CONTAINER (620x92)", cring && cring.style.width === "620px" && cring.style.height === "92px", cring && cring.style.width + "x" + cring.style.height);
-assert("composer ring radius from container", cring && cring.style.borderRadius === "12px", cring && cring.style.borderRadius);
+assert("composer glow styled DIRECTLY on the container (data-dsh-pv)", composerBoxRef && composerBoxRef.__attrs && composerBoxRef.__attrs["data-dsh-pv"] === "1", composerBoxRef && JSON.stringify(composerBoxRef.__attrs));
+assert("composer breathing outward (anim attr)", composerBoxRef && composerBoxRef.__attrs && composerBoxRef.__attrs["data-dsh-pv-anim"] === "breathe-out", composerBoxRef && composerBoxRef.__attrs && composerBoxRef.__attrs["data-dsh-pv-anim"]);
+assert("root CSS vars set for composer glow", documentStub.documentElement.style["--dsh-pv-color"] === "#f97316" && documentStub.documentElement.style["--dsh-pv-bw"] === "2px", JSON.stringify(documentStub.documentElement.style));
+assert("composer comet overlay hugs the CONTAINER (left 8px)", cring && cring.style.left === "8px", cring && cring.style.left);
+assert("composer comet overlay hugs the CONTAINER (top 470px)", cring && cring.style.top === "470px", cring && cring.style.top);
+assert("composer comet overlay hugs the CONTAINER (620x92)", cring && cring.style.width === "620px" && cring.style.height === "92px", cring && cring.style.width + "x" + cring.style.height);
 
 // ---- transient popup: composer hidden (querySelectorAll → []) — the ring
 // must keep its last geometry instead of flickering away
