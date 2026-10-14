@@ -2,6 +2,36 @@
 
 All notable changes to this project are documented in this file.
 
+## [0.1.1] — dsh 0.2 compatibility
+
+### Fixed
+
+- **设置页在 dsh 0.2 下整页空白**：`client.js` 绑定了 `primitives.IconRefreshOutline16`，
+  而 0.2 把图标导出统一改名成 `Icon<Name><Weight>`（`IconRefreshOutlineMedium` /
+  `IconRefreshOutlineRegular`），旧名已不存在。该绑定得到 `undefined`，又被用在
+  `PeakValleySection` 无条件渲染的头部「重新获取」按钮上，React 渲染到它就抛
+  「Element type is invalid」，被设置面板的错误边界吞掉 —— 表现为导航项在、内容全空白。
+  现在通过 `pickPrimitive()` 按候选名依次探测，取第一个存在的导出；全部缺失时退化为
+  纯文字按钮，未来再改名也不会白屏。
+
+### Added
+
+- `test/client.icon-compat.mjs`：跨版本契约检查。直接读取本机已安装的
+  `@deepseek-ai/dsh-client-ui-primitives` 真实导出清单，核对 `client.js` 引用的每个
+  primitives 名字是否真的存在（`pickPrimitive` 的候选表按设计允许缺失）。找不到包时跳过，
+  保持可移植。可用 `DSH_PRIMITIVES_DIR` 指定包目录。
+
+### Changed
+
+- `test/client.load.mjs`、`test/client.runtime.mjs` 的 primitives 桩改为**真实 0.2 导出面**
+  （不再提供 `IconRefreshOutline16`）。旧桩会把这次的白屏断裂掩盖掉。
+
+### Verified
+
+- host 半无需改动：0.2 的 `webServer.register({ kind: "prefix", path, handler })`、
+  `webServer.port`、`webRuntime.trustedHosts` 契约均未变化。
+- `settings.section` 插槽契约未变化（仍为 `slots.inject` + `slots.register(def, Component)`）。
+
 ## [Unreleased]
 
 ### Added

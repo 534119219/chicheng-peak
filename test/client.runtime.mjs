@@ -164,7 +164,9 @@ const reactStub = {
   useRef: () => ({ current: null }),
 };
 const primitivesStub = {
-  Button: function () {}, StateDot: function () {}, IconRefreshOutline16: function () {},
+  // Real dsh 0.2 surface: IconRefreshOutline16 no longer exists.
+  Button: function () {}, StateDot: function () {},
+  IconRefreshOutlineMedium: function () {}, IconRefreshOutlineRegular: function () {},
 };
 globalThis.window.require = function (id) {
   if (id === "react") return reactStub;

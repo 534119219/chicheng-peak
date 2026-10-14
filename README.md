@@ -102,7 +102,18 @@ node_modules 指向源码。
 - 测试：`node test/engine.test.mjs`（引擎/模板/校验）、
   `node test/host.smoke.mjs`（API 路由/围栏/校验）、
   `node test/client.load.mjs`（client 工厂加载）、
-  `node test/client.runtime.mjs`（client 运行时执行，DOM 桩 + 真实 apply/poll）。
+  `node test/client.runtime.mjs`（client 运行时执行，DOM 桩 + 真实 apply/poll）、
+  `node test/client.icon-compat.mjs`（跨版本 primitives 契约检查，读本机已装 dsh 的真实导出清单）。
+
+### dsh 版本兼容
+
+client 半从 `@deepseek-ai/dsh-client-ui-primitives` 取用的图标名随 dsh 版本变化：
+0.1.x 为 `IconRefreshOutline16`，0.2 起统一改成 `Icon<Name><Weight>`
+（`IconRefreshOutlineMedium` / `IconRefreshOutlineRegular`）。**升级 dsh 后请先跑
+`node test/client.icon-compat.mjs`** —— 图标名不存在时，React 会在渲染到该组件的瞬间抛
+「Element type is invalid」，而设置面板的错误边界会把它吞成**整页空白、控制台无红字**，
+非常难排查。本插件已用 `pickPrimitive()` 做多候选名探测（全缺失时退化为纯文字按钮），
+新增图标请沿用同一写法。
 
 ## License
 

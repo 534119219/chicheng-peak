@@ -30,10 +30,14 @@ const reactStub = {
   useMemo: () => {},
   useRef: () => ({ current: null }),
 };
+// Mirrors the REAL dsh 0.2 export surface: the legacy IconRefreshOutline16 name
+// is gone, only the Icon<Name><Weight> forms remain. A stub that still exposed
+// the old name would hide exactly the break that blanked the settings panel.
 const primitivesStub = {
   Button: function () {},
   StateDot: function () {},
-  IconRefreshOutline16: function () {},
+  IconRefreshOutlineMedium: function () {},
+  IconRefreshOutlineRegular: function () {},
 };
 
 window.require = function (id) {
